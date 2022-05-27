@@ -99,7 +99,7 @@ int main(void)
         BaseType_t s;
 
         bsp_init();
-        
+
         s = xTaskCreate(task_service, TASK_NAME, TASK_STACK_SIZE, NULL, TASK_PRIORITY, NULL);
         configASSERT(s != pdFALSE);
 

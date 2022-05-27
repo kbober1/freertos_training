@@ -19,7 +19,7 @@ $(TARGET): $(OBJS)
 	@$(CC) $^ -o $@ $(LDFLAGS)
 	@$(SIZE) $@
 
-else ifeq ($(TARGET_ARCH_NAME),$(filter $(TARGET_ARCH_NAME),stm32f0 stm32l4))
+else ifeq ($(TARGET_ARCH_NAME),$(filter $(TARGET_ARCH_NAME),stm32f0 stm32l4 stm32h7))
 
 $(TARGET).hex: $(TARGET).elf
 	@$(OBJCOPY) -O ihex $^ $@
@@ -40,7 +40,7 @@ else
 $(error Not supported TARGET_ARCH_NAME)
 
 endif
-	
+
 $(OUT_DIR)/main/%.o: $(PROJECT_DIR)/%.c | $$(@D)/.
 	@echo "(CC) $@"
 	@$(CC) -c $(CFLAGS) $< -o $@

@@ -1,36 +1,48 @@
 {
-        "version": "0.2.0",
-        "projectName": "09-bsp_basic_stm32l4",
-        "configurations": [
-            {
-                "name": "STlink launch",
-                "cwd": "${workspaceRoot}",
-                "executable": "${workspaceRoot}/09-bsp_basic_stm32l4/out/bsp_basic.elf",
-                "request": "launch",
-                "type": "cortex-debug",
-                "servertype": "stutil",
-                "device": "STM32L476RG",
-                "interface": "swd",
-                "runToMain": true,
-                // "preLaunchTask": "Build all",
-                // "preLaunchCommands": ["Build all"],
-                "svdFile": "",
-                "swoConfig": {}
-            },
-            {
-                "name": "STlink attach",
-                "cwd": "${workspaceRoot}",
-                "executable": "${workspaceRoot}/09-bsp_basic_stm32l4/out/bsp_basic.elf",
-                "request": "attach",
-                "type": "cortex-debug",
-                "servertype": "stutil",
-                "device": "STM32L476RG",
-                "interface": "swd",
-                "runToMain": true,
-                // "preLaunchTask": "Build all",
-                // "preLaunchCommands": ["Build all"],
-                "svdFile": "",
-                "swoConfig": {}
-            },
-        ]
-    }
+    "version": "0.2.0",
+    "projectName": "09-bsp_basic_stm32l4",
+    "configurations": [
+        {
+            "name": "STlink launch",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/09-bsp_basic_stm32l4/out/bsp_basic.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "stutil",
+            "device": "STM32L476RG",
+            "interface": "swd",
+            "runToMain": true,
+            // "preLaunchTask": "Build all",
+            // "preLaunchCommands": ["Build all"],
+            "svdFile": "",
+            "swoConfig": {}
+        },
+        {
+            "name": "STlink attach",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/09-bsp_basic_stm32l4/out/bsp_basic.elf",
+            "request": "attach",
+            "type": "cortex-debug",
+            "servertype": "stutil",
+            "device": "STM32L476RG",
+            "interface": "swd",
+            "runToMain": true,
+            // "preLaunchTask": "Build all",
+            // "preLaunchCommands": ["Build all"],
+            "svdFile": "",
+            "swoConfig": {}
+        },
+        {
+            "name": "STlink launch H7",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/24-bsp_basic_stm32h7/out/bsp_basic.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "external",
+            "gdbTarget": "192.168.1.40:3333",
+            //"gdbpath": "/usr/bin/gdb-multiarch",
+            "device": "STM32H745ZI",
+            "interface": "swd",
+        },
+    ]
+}

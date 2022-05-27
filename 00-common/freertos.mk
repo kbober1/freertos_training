@@ -20,7 +20,7 @@ FREERTOS_SRC_FILES += \
 	$(FREERTOS_SRC_DIR)/portable/ThirdParty/GCC/Posix/port.c \
 	$(FREERTOS_SRC_DIR)/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c \
 
-	
+
 INC_DIRS += \
 	$(FREERTOS_SRC_DIR)/portable/ThirdParty/GCC/Posix \
 	$(FREERTOS_SRC_DIR)/portable/ThirdParty/GCC/Posix/utils \
@@ -40,6 +40,14 @@ FREERTOS_SRC_FILES += \
 
 INC_DIRS += \
 	$(FREERTOS_SRC_DIR)/portable/GCC/ARM_CM4F \
+
+else ifeq ($(TARGET_ARCH_NAME),stm32h7)
+
+FREERTOS_SRC_FILES += \
+	$(FREERTOS_SRC_DIR)/portable/GCC/ARM_CM7/r0p1/port.c \
+
+INC_DIRS += \
+	$(FREERTOS_SRC_DIR)/portable/GCC/ARM_CM7/r0p1 \
 
 else
 

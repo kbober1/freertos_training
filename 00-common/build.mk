@@ -15,7 +15,7 @@ else
 FINAL_TARGETS := $(TARGET)
 endif
 
-else ifeq ($(TARGET_ARCH_NAME),$(filter $(TARGET_ARCH_NAME),stm32f0 stm32l4))
+else ifeq ($(TARGET_ARCH_NAME),$(filter $(TARGET_ARCH_NAME),stm32f0 stm32l4 stm32h7))
 
 ifdef FINAL_TARGETS
 FINAL_TARGETS += $(TARGET).hex
