@@ -53,6 +53,34 @@ static void STDOUTInit(void)
 }
 
 /*
+static void ClockInit(void) {
+    struct rcc_pll_config rcc_config = {
+	.sysclock_source = RCC_PLL,
+	.pll_source = RCC_CFGR_PLLSRC_HSE_CLK,
+
+	uint32_t hse_frequency;
+	struct pll_config {
+		uint8_t divm;
+		uint16_t divn;
+		uint8_t divp;
+		uint8_t divq;
+		uint8_t divr;
+	} pll1, pll2, pll3;
+	uint8_t core_pre;
+	uint8_t hpre;
+	uint8_t ppre1;
+	uint8_t ppre2;
+	uint8_t ppre3;
+	uint8_t ppre4;
+	uint8_t flash_waitstates;
+	enum pwr_vos_scale voltage_scale;
+	enum pwr_sys_mode power_mode;
+	uint8_t smps_level;
+};
+}
+
+*/
+/*
 static void ClockInit(void)
 {
         SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));

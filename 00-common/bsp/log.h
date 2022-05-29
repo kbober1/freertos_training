@@ -22,33 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "bsp.h"
+#ifndef _BSP_LOG_H
+#define _BSP_LOG_H
 
-#include "system/log.h"
+int bsp_log_init(void);
 
-void bsp_init(void)
-{
-        int s;
-
-        s = bsp_log_init();
-        if (s != 0) {
-                LOG_E("bsp_log_init failed: %d", s);
-        }
-
-        s = bsp_led_init();
-        if (s != 0) {
-                LOG_E("bsp_led_init failed: %d", s);
-        }
-
-        s = bsp_button_init();
-        if (s != 0) {
-                LOG_E("bsp_button_init failed: %d", s);
-        }
-
-        s = bsp_uart_init();
-        if (s != 0) {
-                LOG_E("bsp_uart_init failed: %d", s);
-        }
-
-        LOG_I("initialized");
-}
+#endif /* _BSP_LOG_H */

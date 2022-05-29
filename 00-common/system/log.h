@@ -25,6 +25,8 @@ SOFTWARE.
 #ifndef _LOG_H
 #define _LOG_H
 
+#include <stddef.h>
+
 #define LOGGING_LEVEL_NONE      0
 #define LOGGING_LEVEL_FATAL     5
 #define LOGGING_LEVEL_ERROR     10
@@ -81,6 +83,8 @@ SOFTWARE.
 #endif
 
 void log_printf(int level, const char *file, const char *func, unsigned long line, const char *fmt, ...);
+
+int log_init(size_t logs_buf_size);
 
 #else
 

@@ -28,15 +28,48 @@ SOFTWARE.
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "message_buffer.h"
+#include "semphr.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 
+#define TASK_NAME                       "logs"
+#define TASK_PRIORITY                   (tskIDLE_PRIORITY + 1)
+#define TASK_STACK_SIZE                 (configMINIMAL_STACK_SIZE)
+#define MESSAGE_TIMEOUT_TICKS           100
+
+static MessageBufferHandle_t message_buffer_handle = NULL;
+static char log_buffer_in[1024] = {0};
+static char log_buffer_out[1024] = {0};
+static SemaphoreHandle_t xMutexHandle = NULL;
+
+static void log_service(void *pvParameters) {
+    while (message_buffer_handle) {
+        while (xMessageBufferReceive(message_buffer_handle, log_buffer_out, sizeof(log_buffer_out), MESSAGE_TIMEOUT_TICKS) > 0) {
+            printf("%s", log_buffer_out);
+            memset(log_buffer_out, 0, sizeof(log_buffer_out));
+        }
+    }
+}
+
+int log_init(size_t logs_buf_size) {
+        message_buffer_handle = xMessageBufferCreate(logs_buf_size);
+
+        xMutexHandle = xSemaphoreCreateMutex();
+        BaseType_t s;
+        s = xTaskCreate(log_service, TASK_NAME, TASK_STACK_SIZE, NULL, TASK_PRIORITY, NULL);
+        configASSERT(s != pdFALSE);
+
+    return 0;
+}
+
 void log_printf(int level, const char *file, const char *func, unsigned long line, const char *fmt, ... )
 {
         char level_name[8] = {0};
         char prefix[16] = {0};
+
         static unsigned long cntr = 0;
 
         system_stdout_lock();
@@ -60,17 +93,28 @@ void log_printf(int level, const char *file, const char *func, unsigned long lin
                 strcpy(level_name, "TRACE");
                 strcpy(prefix, SHELL_FONT_CYAN);
         }
-        
+
         TickType_t ticks = xTaskGetTickCount();
-        printf("%s%04lu %08lu %s %s %s:%lu > ", prefix, cntr, ticks, level_name, func, file, line);
+        xSemaphoreTake(xMutexHandle, MESSAGE_TIMEOUT_TICKS);
+        int data_size = snprintf(log_buffer_in, sizeof(log_buffer_in), "%s%04lu %08lu %s %s %s:%lu > ", prefix, cntr, ticks, level_name, func, file, line);
         ++cntr;
 
         va_list arg;
         va_start( arg, fmt );
-        vprintf( fmt, arg );
+        char *posInBuff = log_buffer_in + data_size;
+        data_size += vsnprintf(posInBuff, sizeof(log_buffer_in) - data_size, fmt, arg);
         va_end( arg );
 
-        printf(SHELL_FONT_RESET SHELL_NEW_LINE);
+        strcat(log_buffer_in, SHELL_FONT_RESET);
+        strcat(log_buffer_in, SHELL_NEW_LINE);
+        data_size += strlen(SHELL_FONT_RESET) + strlen(SHELL_NEW_LINE);
+
+        if (message_buffer_handle) {
+            xMessageBufferSend(message_buffer_handle, log_buffer_in, data_size, MESSAGE_TIMEOUT_TICKS);
+        } else {
+            printf("%s", log_buffer_in);
+        }
+        xSemaphoreGive(xMutexHandle);
 
         system_stdout_unlock();
 }

@@ -28,6 +28,7 @@ SOFTWARE.
 #include "bsp/uart.h"
 #include "bsp/led.h"
 #include "bsp/button.h"
+#include "bsp/log.h"
 
 void bsp_init(void);
 
